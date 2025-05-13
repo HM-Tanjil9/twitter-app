@@ -1,0 +1,22 @@
+.tweet-wrapper {
+  border: 1px solid #000;
+  padding: 1rem;
+  width: 800px;
+  font-size: x-large;
+}
+
+.tweet-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.likes,
+.created-at {
+  font-size: small;
+}
+
+.tweet-content {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
