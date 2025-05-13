@@ -38,7 +38,7 @@ const initialDummyTweets = [
 export default function Tweeter() {
     const [tweets, setTweets] = useState(initialDummyTweets);
     const handleAddTweet = (text) => {
-        let nextId = (tweets.length > 0) ? tweets[tweets.length - 1].id+1 : 0;
+        let nextId = (tweets.length > 0) ? tweets.length + 1 : 0;
         setTweets([...tweets,{
             content: text,
             likeCount: Math.floor(Math.random() * 10),
@@ -57,9 +57,14 @@ export default function Tweeter() {
             })
         )
     }
+    const sortTweets = () => {
+        tweets.sort((t1, t2) => t2.createdAt.getTime() - t1.createdAt.getTime());
+        setTweets([...tweets]);
+    }
     return (
         <>
             <AddTweet onAddTweet={handleAddTweet}/>
+            <button onClick={sortTweets}>Sort by created at</button>
             <TweetList tweets={tweets} onEditTweet={handleEditTweet}/>
         </>
     )
