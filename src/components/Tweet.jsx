@@ -2,13 +2,15 @@ import { useState } from 'react';
 import '../css/Tweet.css';
 function Tweet({tweetId, content, likeCount, createdAt, onEdit}) {
     const [isEditing, setIsEditing] = useState(false);
-
+    
     return(
         <div className="tweet-wrapper">
             <div className="tweet-content">
                 <div >
                     {isEditing ? (
                         <textarea 
+                            rows={2}
+                            cols={40}
                             value={content} 
                             onChange={(e) => onEdit({
                                 id: tweetId,

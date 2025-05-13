@@ -5,7 +5,11 @@ function AddTweet({onAddTweet}) {
     return (
         <>
             <input type="text" placeholder="Add a new tweet ..." value={text} onChange={(e) => setText(e.target.value)}/>
-            <input type="button" value="Add tweet" onClick={() => {onAddTweet(text); setText('')}} />
+            <button
+                onClick={() => {onAddTweet(text); setText('')}}
+            >
+                Add Todo
+            </button>
         </>
     );
 }

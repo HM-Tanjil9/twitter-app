@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import AddTweet from './AddTweet';
 import TweetList from './TweetList';
 
@@ -34,36 +34,35 @@ const initialDummyTweets = [
         createdAt: new Date(),
     }
 ];
-
+const MemoisedAddTweet = memo(AddTweet);
 export default function Tweeter() {
     const [tweets, setTweets] = useState(initialDummyTweets);
-    const handleAddTweet = (text) => {
-        let nextId = (tweets.length > 0) ? tweets.length + 1 : 0;
-        setTweets([...tweets,{
-            content: text,
-            likeCount: Math.floor(Math.random() * 10),
-            id: nextId,
-            createdAt: new Date(),
-        }]);
-    }
-    const handleEditTweet = (updateTweet) => {
-        setTweets(
-            tweets.map((prevTweet) => {
-                if(prevTweet.id === updateTweet.id) {
-                    return updateTweet;
-                } else {
-                    return prevTweet;
-                }
-            })
-        )
-    }
-    const sortTweets = () => {
-        tweets.sort((t1, t2) => t2.createdAt.getTime() - t1.createdAt.getTime());
-        setTweets([...tweets]);
-    }
+    
+    const handleAddTweet = useCallback((text) => {
+        setTweets((prevTweets) => [
+            ...prevTweets, {
+                content: text,
+                likeCount: Math.floor(Math.random() * 10),
+                id: prevTweets.length > 0 ? prevTweets.length + 1 : 0,
+                createdAt: new Date(),
+            }
+        ]);
+    }, []);
+    const handleEditTweet = useCallback((updateTweet) => {
+        setTweets((prevTweets) => 
+            prevTweets.map((prevTweet) =>
+                prevTweet.id === updateTweet.id ? updateTweet : prevTweet
+            )
+        );
+    }, []);
+    const sortTweets = useCallback(() => {
+        setTweets((prevTweets) => 
+            [...prevTweets].sort((t1, t2) => t2.createdAt.getTime() - t1.createdAt.getTime())
+        );
+    }, []);
     return (
         <>
-            <AddTweet onAddTweet={handleAddTweet}/>
+            <MemoisedAddTweet onAddTweet={handleAddTweet}/>
             <button onClick={sortTweets}>Sort by created at</button>
             <TweetList tweets={tweets} onEditTweet={handleEditTweet}/>
         </>
